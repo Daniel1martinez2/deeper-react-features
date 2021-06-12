@@ -66,6 +66,7 @@ const Login = (props) => {
   const {isValid: emailIsValid} = emailState; 
   const {isValid: passwordIsValid} = passwordState; 
   useEffect(()=>{
+    //debouncing -> cuando espero x segundos para revisar lo que escribio el user
     const identifier = setTimeout(() => {   
       console.log('checking form validity');
       setFormIsValid(
