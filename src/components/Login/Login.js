@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useContext } from 'react';
+import React, { useState, useReducer, useEffect, useContext, useRef } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -63,6 +63,9 @@ const Login = (props) => {
   const authCtx = useContext(AuthContext); 
   const {isValid: emailIsValid} = emailState; 
   const {isValid: passwordIsValid} = passwordState; 
+
+  const emailInputRef = useRef(); 
+  const passwordInputRef = useRef(); 
   useEffect(()=>{
     //debouncing -> cuando espero x segundos para revisar lo que escribio el user
     const identifier = setTimeout(() => {   
@@ -104,8 +107,9 @@ const Login = (props) => {
     if(formIsValid){
       authCtx.onLogin(emailState.value, passwordState.value);
     }else if(!emailIsValid){
-
+      emailInputRef.current.focus(); 
     }else{
+      passwordInputRef.current.focus(); 
       
     }
   };
@@ -113,7 +117,8 @@ const Login = (props) => {
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <Input  
+        <Input 
+          ref={emailInputRef} 
           isValid={emailState.isValid}
           label={'E-mail'} 
           id='email' 
@@ -123,6 +128,7 @@ const Login = (props) => {
           onBlur={validateEmailHandler}  
         />
         <Input  
+          ref={passwordInputRef}
           isValid={passwordState.isValid}
           label={'Password'} 
           id='password' 
